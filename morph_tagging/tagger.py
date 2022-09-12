@@ -17,20 +17,15 @@ from natasha import (
 )
 
 
-class Tagger:
-    def __init__(self):
-        pass
-
-
 class Tools:
-    def __init__(self, segmenter, morph_vocab, emb):
-        self.segmenter = segmenter
-        self.morph_vocab = morph_vocab
-        self.emb = emb
+    def __init__(self):
+        self.segmenter = Segmenter()
+        self.morph_vocab = MorphVocab()
+        self.emb = NewsEmbedding()
 
-        self.morph_tagger = NewsMorphTagger(emb)
-        self.syntax_parser = NewsSyntaxParser(emb)
-        self.ner_tagger = NewsNERTagger(emb)
+        self.ner_tagger = NewsNERTagger(self.emb)
+        self.syntax_parser = NewsSyntaxParser(self.emb)
+        self.morph_tagger = NewsMorphTagger(self.emb)
 
 
 class Extractor:
@@ -51,19 +46,29 @@ class DocParser:
         self.doc.tag_morph(self.tools.morph_tagger)
         self.doc.parse_syntax(self.tools.syntax_parser)
         self.doc.tag_ner(self.tools.ner_tagger)
+
         return self.doc
 
 
 class Normalizer:
-    def __init__(self, tools: Tools, doc_parser: DocParser):
-        self.doc_parser = doc_parser
+    def __init__(self, tools: Tools):
         self.tools = tools
 
-    def normalize(self):
-        doc = self.doc_parser.doc
-        for token in doc.tokens:
-            token.lemmatize(self.tools.morph_vocab)
-        # for span in doc.spans:
-        #     span.normalize(self.tools.morph_vocab)
+    def normalize(self, doc_parser: DocParser):
+        doc = doc_parser.parse()
+
+        doc = self.__lemmatize(doc)
+        # self.__normalize(doc)
+
         # TODO: RESPONSE
         return {_.text: _.lemma for _ in doc.tokens}
+
+    def __lemmatize(self, doc):
+        for token in doc.tokens:
+            token.lemmatize(self.tools.morph_vocab)
+        return doc
+
+    def __normalize(self, doc):
+        for span in doc.spans:
+            span.normalize(self.tools.morph_vocab)
+        return doc
