@@ -29,5 +29,6 @@ class NatashaCatcher(IntentCatcher):
         for key, user_sentences in intents.items():
             # FIXME
             for user_sent in user_sentences:
+
                 if user_sent in list(self.normal_sentence.values()):
                     return key
