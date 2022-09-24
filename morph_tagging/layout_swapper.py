@@ -20,10 +20,12 @@ layout_ru_eng = {'ё': '`', 'Ё': '~', '"': '@', '№': '#', ';': '$', ',': '^',
 layout_eng_ru = dict(zip(layout_ru_eng.values(), layout_ru_eng.keys()))
 
 
-def swap_engrus(word):
-    res = ""
-    for ch in word:
-        res += layout_eng_ru.get(ch,ch)
-    return res
-
+class LayoutSwapper:
+    def __init__(self):
+        pass
+    def swap_engrus(self, word):
+        res = ""
+        for ch in word:
+            res += layout_eng_ru.get(ch, ch)
+        return res
 
