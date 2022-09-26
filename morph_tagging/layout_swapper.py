@@ -1,5 +1,4 @@
-#FIXME: Use for checking dictionary of chars?
-layout_ru_eng = {'ё': '`', 'Ё': '~', '"': '@', '№': '#', ';': '$', ',': '^', '?': '&', 'й': 'q',
+LAYOUT_RU_ENG = {'ё': '`', 'Ё': '~', '"': '@', '№': '#', ';': '$', ',': '^', '?': '&', 'й': 'q',
                  'Й': 'Q',
                  'ц': 'w', 'Ц': 'W', 'У': 'E', 'у': 'e', 'К': 'R', 'к': 'r', 'Е': 'T', 'е': 't',
                  'Н': 'Y',
@@ -17,7 +16,7 @@ layout_ru_eng = {'ё': '`', 'Ё': '~', '"': '@', '№': '#', ';': '$', ',': '^',
                  'Ю': '>',
                  'ю': '.'}
 
-layout_eng_ru = dict(zip(layout_ru_eng.values(), layout_ru_eng.keys()))
+LAYOUT_ENG_RU = dict(zip(LAYOUT_RU_ENG.values(), LAYOUT_RU_ENG.keys()))
 
 
 class LayoutSwapper:
@@ -26,6 +25,6 @@ class LayoutSwapper:
     def swap_engrus(self, word):
         res = ""
         for ch in word:
-            res += layout_eng_ru.get(ch, ch)
+            res += LAYOUT_ENG_RU.get(ch, ch)
         return res
 
