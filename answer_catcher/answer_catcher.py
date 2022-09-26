@@ -1,7 +1,7 @@
 import json
 import os
 
-DATA_PATH = os.getcwd() + "/data/user_answers.json"
+DATA_PATH = os.path.join(os.getcwd(),os.path.join("data","user_answers.json"))
 
 
 def _read_json():
