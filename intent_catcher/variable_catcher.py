@@ -19,9 +19,9 @@ def _read_json():
 
 
 class VariableCatcher(IdCatcher):
-    def __init__(self, id: dict, normalize_doc):
+    def __init__(self, intent: dict, normalize_doc):
         super().__init__()
-        self.intent_head_id = id
+        self.intent_head_id = intent
         self.normalize_doc = normalize_doc
 
     def compare_id(self):
