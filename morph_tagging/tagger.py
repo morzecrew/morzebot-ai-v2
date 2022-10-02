@@ -61,7 +61,7 @@ class Normalizer:
         # self.__normalize(doc)
 
         # TODO: RESPONSE
-        return {_.text: _.lemma for _ in doc.tokens}
+        return doc
 
     def __lemmatize(self, doc):
         for token in doc.tokens:
