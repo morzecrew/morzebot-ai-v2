@@ -36,3 +36,4 @@ websockets==10.3
 Werkzeug==2.2.2
 yargy==0.15.0
 zipp==3.8.1
+pytest==7.1.3
