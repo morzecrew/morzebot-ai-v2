@@ -6,7 +6,7 @@ from morph_tagging.tagger import Tools, DocParser
 
 def intent_catcher_test():
     tools = Tools()
-    sentence = "првет мурзе ,hjym дом"
+    sentence = "првет мурзе, hjym дом"
     builder: Builder = MorphBuilder(tools=tools)
     normal_sentence = builder.build(sentence=sentence)
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
@@ -14,6 +14,7 @@ def intent_catcher_test():
     result = AnswerCatcher().catch_answer(response)
 
     print(result)
+    assert result != "првет морзе, бронь дом"
     assert result != "Извините, я вас не понимаю"
 
 

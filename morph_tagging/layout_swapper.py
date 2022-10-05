@@ -23,8 +23,5 @@ class LayoutSwapper:
     def __init__(self):
         pass
     def swap_engrus(self, word):
-        res = ""
-        for ch in word:
-            res += LAYOUT_ENG_RU.get(ch, ch)
-        return res
+        return "".join([LAYOUT_ENG_RU.get(ch, ch) for ch in word])
 
