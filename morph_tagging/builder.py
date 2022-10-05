@@ -18,7 +18,6 @@ class MorphBuilder(Builder):
     def build(self, sentence):
         corrected_text = SpellCorrector().correct(sentence)
         # doc_parser = DocParser(self.tools, sentence)
-        print(corrected_text)
         doc_parser = DocParser(self.tools, corrected_text)
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)
         return normalized_intent
