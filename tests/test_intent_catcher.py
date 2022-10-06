@@ -7,17 +7,21 @@ from morph_tagging.spell_checker import SpellCorrector
 from morph_tagging.tagger import Tools, DocParser
 
 
-@pytest.mark.parametrize("user_sentence", ["фыв привет бронь дом",
-                                           "хочу забронировать баню",
-                                           "у вас такая крутая база отдыха хочу забронировать у васс дом"])
-def test_intent_catcher_positive_res(user_sentence):
+def generate_result(user_sentence):
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)
     normal_sentence = builder.build(sentence=user_sentence)
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     response = catcher.catch()
-    result = AnswerCatcher().catch_answer(response)
+    return AnswerCatcher().catch_answer(response)
 
+
+@pytest.mark.parametrize("user_sentence", ["фыв привет бронь дом",
+                                           "хочу забронировать баню",
+                                           "у вас такая крутая база отдыха хочу забронировать у васс дом"
+                                           ])
+def test_intent_catcher_positive_res(user_sentence):
+    result = generate_result(user_sentence)
     assert result != "Извините, я вас не понимаю"
 
 
@@ -25,11 +29,6 @@ def test_intent_catcher_positive_res(user_sentence):
                                            "как дела",
                                            "вау вот это да"])
 def test_intent_catcher_negative_res(user_sentence):
-    tools = Tools()
-    builder: Builder = MorphBuilder(tools=tools)
-    normal_sentence = builder.build(sentence=user_sentence)
-    catcher: IntentCatcher = NatashaCatcher(normal_sentence)
-    response = catcher.catch()
-    result = AnswerCatcher().catch_answer(response)
+    result = generate_result(user_sentence)
     with pytest.raises(AssertionError):
         assert result != "Извините, я вас не понимаю"
