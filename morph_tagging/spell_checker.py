@@ -1,14 +1,17 @@
-from spellchecker import SpellChecker
+import jamspell
+import os
+from morph_tagging.layout_swapper import LayoutSwapper
 
-spell = SpellChecker(language='ru')
+spell = jamspell.TSpellCorrector()
+# https://drive.google.com/drive/folders/1tl-UoXosujSVJRNKcr99xyUuNfGfcrMe
+DATA_PATH = os.path.join(os.getcwd(),os.path.join("data","jamspell_ru_model_subtitles.bin"))
+spell.LoadLangModel(DATA_PATH)
 
 
-# TODO: add in exceptions "морзе", because spellchecker corrects it into "море"
 
 class SpellCorrector:
     def __init__(self):
         pass
 
-    # FIXME: find new library for correcting text
     def correct(self, sentence: str):
-        return ' '.join([spell.correction(word) for word in sentence.split()])
+        return ' '.join([spell.FixFragment(LayoutSwapper().swap_engrus(word)) for word in sentence.split()])
