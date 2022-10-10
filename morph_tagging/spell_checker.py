@@ -4,9 +4,8 @@ from morph_tagging.layout_swapper import LayoutSwapper
 
 spell = jamspell.TSpellCorrector()
 # https://drive.google.com/drive/folders/1tl-UoXosujSVJRNKcr99xyUuNfGfcrMe
-DATA_PATH = os.path.join(os.getcwd(),os.path.join("data","jamspell_ru_model_subtitles.bin"))
+DATA_PATH = os.path.join("/mz_bot/ai/data", "jamspell_ru_model_subtitles.bin")
 spell.LoadLangModel(DATA_PATH)
-
 
 
 class SpellCorrector:
