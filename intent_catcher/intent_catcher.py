@@ -12,7 +12,7 @@ class IntentCatcher:
         raise NotImplementedError
 
 
-DATA_PATH = os.getcwd() + "\\data\\user_intents.json"
+DATA_PATH = os.path.join(os.getcwd(),os.path.join("data", "user_intents.json"))
 
 
 def _read_json():
