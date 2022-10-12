@@ -1,6 +1,3 @@
-import json
-import os
-
 
 class IdCatcher:
     def __init__(self):
@@ -9,13 +6,8 @@ class IdCatcher:
     def catch(self):
         raise NotImplementedError
 
-
-DATA_PATH = os.getcwd() + "\\data\\user_intents.json"
-
-
-def _read_json():
-    file = open(DATA_PATH, encoding='UTF-8')
-    return json.loads(file.read())
+    def get_variable(self):
+        pass
 
 
 class VariableCatcher(IdCatcher):
@@ -23,15 +15,27 @@ class VariableCatcher(IdCatcher):
         super().__init__()
         self.intent_head_id = intent
         self.normalize_doc = normalize_doc
+        self.value_rec = {}
+        self.count = 1
+        self.depth_recurs = 3
 
-    def compare_id(self):
-        value_rec = {}
-        for token in self.normalize_doc.tokens:
-            if token.head_id == self.intent_head_id["token_id"]:
-                value_rec["intents"] = self.intent_head_id["key"]
-                value_rec["values"] = token.lemma
-            else:
-                value_rec["intents"] = self.intent_head_id["key"]
-                value_rec["values"] = ""
-        return value_rec
+    def get_variable(self):
 
+        values = self.__recursive_search_variable(self.intent_head_id["token_id"])
+        res = {"intent": self.intent_head_id["key"], "payload": {self.intent_head_id["user_sent"]: {"values": values}}}
+
+        return res
+
+    def __recursive_search_variable(self, token_id: str):
+
+        if self.count < self.depth_recurs:
+            for token in self.normalize_doc.tokens:
+                if token.head_id == token_id:
+                    self.value_rec["level_" + str(self.count)] = token.lemma
+                    token_id = token.id
+                    self.count = self.count + 1
+                    self.__recursive_search_variable(token_id)
+                else:
+                    self.value_rec["level_" + str(self.count)] = ""
+
+        return self.value_rec
