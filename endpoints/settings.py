@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from db.repository.settings_repository import insert_settings, get_settings_by_uid
+from db.repository.settings_repository import insert_settings, get_settings_by_uuid
 
 settings_router = APIRouter(
     prefix="/settings",
@@ -23,8 +23,8 @@ def set_settings(sett: Settings):
 
 @settings_router.get("/get")
 def get_settings(uuid: str, global_: bool):
-    settings = get_settings_by_uid(uuid)
+    settings = get_settings_by_uuid(uuid)
     if settings:
+        del settings["_id"]
         return settings
-    else:
-        return {'code': 404, 'status': 'not found', 'error': f'settings not found by this uuid: {uuid}'}
+    return {'code': 404, 'status': 'not found', 'error': f'settings not found by this uuid: {uuid}'}

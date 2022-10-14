@@ -21,7 +21,7 @@ class MorphBuilder(Builder):
             corrected_text = SpellCorrector().correct(sentence)
         else:
             corrected_text = sentence
-        # doc_parser = DocParser(self.tools, sentence)
+
         doc_parser = DocParser(self.tools, corrected_text)
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)
         return normalized_intent

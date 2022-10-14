@@ -4,15 +4,18 @@ COLLECTION_NAME = 'settings'
 
 
 def insert_settings(uuid: str, data: dict) -> int:
-    db[COLLECTION_NAME].insert_one({'uuid': uuid, 'data': data})
+    if is_uuid_exists(uuid):
+        db[COLLECTION_NAME].update_one({"uuid": uuid}, {"$set": {"data": data}})
+    else:
+        db[COLLECTION_NAME].insert_one({"uuid": uuid, "data": data})
     return 1
 
 
-def get_settings_by_uid(uuid: str) -> int:
-    return db[COLLECTION_NAME].find(uuid)
+def get_settings_by_uuid(uuid: str) -> int:
+    return db[COLLECTION_NAME].find_one({"uuid": uuid})
 
 
-def is_uid_exists(uuid):
-    if db[COLLECTION_NAME].find(uuid):
+def is_uuid_exists(uuid):
+    if db[COLLECTION_NAME].find_one({"uuid": uuid}):
         return True
     return False

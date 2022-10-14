@@ -1,4 +1,4 @@
-from db.repository.settings_repository import get_settings_by_uid
+from db.repository.settings_repository import get_settings_by_uuid
 
 
 class Settings:
@@ -6,5 +6,5 @@ class Settings:
         self.uuid = uuid
 
     def is_speller_enabled(self):
-        settings = get_settings_by_uid(self.uuid)
-        return settings["spell_check_enabled"]
+        settings = get_settings_by_uuid(self.uuid)
+        return settings["data"]["spell_check_enabled"]
