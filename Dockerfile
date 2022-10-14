@@ -4,6 +4,8 @@ WORKDIR /mz_bot/ai
 
 COPY . .
 
+RUN tar -xvf ./data/swig-3.0.12.tar -C ./data
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
