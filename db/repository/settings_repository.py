@@ -10,3 +10,9 @@ def insert_settings(uuid: str, data: dict) -> int:
 
 def get_settings_by_uid(uuid: str) -> int:
     return db[COLLECTION_NAME].find(uuid)
+
+
+def is_uid_exists(uuid):
+    if db[COLLECTION_NAME].find(uuid):
+        return True
+    return False

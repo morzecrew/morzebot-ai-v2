@@ -1,7 +1,7 @@
 import os
 
 from fastapi import FastAPI, APIRouter
-from endpoints.users import users_router
+# from endpoints.users import users_router
 from endpoints.intents import intents_router
 import uvicorn
 
@@ -14,7 +14,7 @@ api_router_v1 = APIRouter(
     tags=["v1"],
 )
 
-api_router_v1.include_router(users_router)
+# api_router_v1.include_router(users_router)
 api_router_v1.include_router(intents_router)
 app.include_router(api_router_v1, prefix=API_PREFIX, tags=["api"])
 

@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from intent_catcher.intent_catcher import IntentCatcher, NatashaCatcher
 from morph_tagging.builder import Builder, MorphBuilder
 from morph_tagging.tagger import Tools
+from db.repository.settings_repository import is_uid_exists
 
 intents_router = APIRouter(
     prefix="/intents",
@@ -15,10 +16,13 @@ async def send_intent():
 
 
 @intents_router.get("/")
-async def send_sentence(sentence: str):
+async def send_sentence(sentence: str, uuid):
+    if not is_uid_exists(uuid):
+        return {'code': 404, 'status': 'uuid not found', 'error': f'settings not found by this uuid: {uuid}'}
+
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)
-    normal_sentence = builder.build(sentence=sentence)
+    normal_sentence = builder.build(sentence=sentence, uuid=uuid)
 
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     response = catcher.catch()
