@@ -1,13 +1,9 @@
-
 class IdCatcher:
     def __init__(self):
         pass
 
-    def catch(self):
-        raise NotImplementedError
-
     def get_variable(self):
-        pass
+        raise NotImplementedError
 
 
 class VariableCatcher(IdCatcher):

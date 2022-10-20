@@ -1,5 +1,5 @@
 from typing import Union
-from morph_tagging.spell_checker import SpellCorrector
+#from morph_tagging.spell_checker import SpellCorrector
 from morph_tagging.tagger import Normalizer, DocParser, Extractor, Tools
 
 
@@ -16,8 +16,8 @@ class MorphBuilder(Builder):
         super().__init__(tools)
 
     def build(self, sentence):
-        corrected_text = SpellCorrector().correct(sentence)
+        #corrected_text = SpellCorrector().correct(sentence)
         # doc_parser = DocParser(self.tools, sentence)
-        doc_parser = DocParser(self.tools, corrected_text)
+        doc_parser = DocParser(self.tools, sentence)
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)
         return normalized_intent
