@@ -17,8 +17,9 @@ async def send_intent():
 
 @intents_router.get("/")
 async def send_sentence(sentence: str, uuid: str):
-    if not is_uuid_exists(uuid):
-        return {'code': 404, 'status': 'uuid not found', 'error': f'settings not found by this uuid: {uuid}'}
+    if uuid is not None:
+        if not is_uuid_exists(uuid):
+            return {'code': 404, 'status': 'uuid not found', 'error': f'settings not found by this uuid: {uuid}'}
 
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)

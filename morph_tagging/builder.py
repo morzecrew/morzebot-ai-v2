@@ -17,10 +17,13 @@ class MorphBuilder(Builder):
         super().__init__(tools)
 
     def build(self, sentence, uuid):
-        if Settings(uuid).is_speller_enabled():
-            corrected_text = SpellCorrector().correct(sentence)
+        if uuid is not None:
+            if Settings(uuid).is_speller_enabled():
+                corrected_text = SpellCorrector().correct(sentence)
+            else:
+                corrected_text = sentence
         else:
-            corrected_text = sentence
+            corrected_text = SpellCorrector().correct(sentence)
 
         doc_parser = DocParser(self.tools, corrected_text)
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)

@@ -1,12 +1,26 @@
 import os
 
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, APIRouter
 from endpoints.users import users_router
 from endpoints.intents import intents_router
 from endpoints.settings import settings_router
 import uvicorn
 
+
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 API_PREFIX = "/api"
 

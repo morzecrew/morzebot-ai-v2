@@ -10,7 +10,7 @@ from morph_tagging.tagger import Tools, DocParser
 def generate_result(user_sentence):
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)
-    normal_sentence = builder.build(sentence=user_sentence)
+    normal_sentence = builder.build(sentence=user_sentence, uuid=None)
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     response = catcher.catch()
     return AnswerCatcher().catch_answer(response)
