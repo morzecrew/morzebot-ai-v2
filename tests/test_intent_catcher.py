@@ -11,7 +11,7 @@ from morph_tagging.tagger import Tools, DocParser
 def generate_result(user_sentence):
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)
-    normal_sentence = builder.build(sentence=user_sentence)
+    normal_sentence = builder.build(sentence=user_sentence, uuid=None)
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     intent_response = catcher.catch()
     variable: IdCatcher = VariableCatcher(intent_response, normal_sentence)
