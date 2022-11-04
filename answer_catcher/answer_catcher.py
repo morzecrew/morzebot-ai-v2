@@ -1,7 +1,7 @@
 import json
 import os
 
-DATA_PATH = os.path.join(os.getcwd(),os.path.join("data","user_answers.json"))
+DATA_PATH = os.path.join(os.getcwd(), os.path.join("data", "user_answers.json"))
 
 
 def _read_json():
@@ -12,6 +12,9 @@ def _read_json():
 class AnswerCatcher:
     def catch_answer(self, intent):
         user_answers = _read_json()
+
+        if intent is None:
+            return user_answers["default"]
 
         for key, value in user_answers.items():
             if key == intent["key"]:

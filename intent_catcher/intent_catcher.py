@@ -12,7 +12,7 @@ class IntentCatcher:
         raise NotImplementedError
 
 
-DATA_PATH = os.path.join(os.getcwd(),os.path.join("data", "user_intents.json"))
+DATA_PATH = os.path.join(os.getcwd(), os.path.join("data", "user_intents.json"))
 
 
 def _read_json():
@@ -27,10 +27,11 @@ class NatashaCatcher(IntentCatcher):
 
     def catch(self):
         intents = _read_json()
-
         for key, user_sentences in intents.items():
             # FIXME
             for user_sent in user_sentences:
                 for token in self.normal_sentence.tokens:
                     if user_sent == token.lemma:
                         return {"key": key, "user_sent": user_sent, "token_id": token.id}
+
+        return None
