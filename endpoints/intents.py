@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from intent_catcher.intent_catcher import IntentCatcher, NatashaCatcher
+from intent_catcher.variable_catcher import IdCatcher, VariableCatcher
 from morph_tagging.builder import Builder, MorphBuilder
 from morph_tagging.tagger import Tools
 from db.repository.settings_repository import is_uuid_exists
@@ -28,4 +29,7 @@ async def send_sentence(sentence: str, uuid: str):
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     response = catcher.catch()
 
-    return {"intent": response}
+    variable: IdCatcher = VariableCatcher(response, normal_sentence)
+    result = variable.get_variable()
+
+    return result
