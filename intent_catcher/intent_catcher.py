@@ -1,6 +1,8 @@
 import json
 import os
 
+from natasha import Doc
+
 
 class IntentCatcher:
     def __init__(self):
@@ -19,7 +21,7 @@ def _read_json():
 
 
 class NatashaCatcher(IntentCatcher):
-    def __init__(self, normal_sentence: dict):
+    def __init__(self, normal_sentence: Doc):
         super().__init__()
         self.normal_sentence = normal_sentence
 
@@ -29,6 +31,6 @@ class NatashaCatcher(IntentCatcher):
         for key, user_sentences in intents.items():
             # FIXME
             for user_sent in user_sentences:
-
-                if user_sent in list(self.normal_sentence.values()):
-                    return key
+                for token in self.normal_sentence.tokens:
+                    if user_sent == token.lemma:
+                        return {"key": key, "user_sent": user_sent, "token_id": token.id}

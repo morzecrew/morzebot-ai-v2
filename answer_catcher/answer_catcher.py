@@ -14,7 +14,7 @@ class AnswerCatcher:
         user_answers = _read_json()
 
         for key, value in user_answers.items():
-            if key == intent:
+            if key == intent["key"]:
                 return value
 
         return user_answers["default"]
