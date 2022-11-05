@@ -6,7 +6,7 @@ from tools.settings import Settings
 
 class Builder:
     def __init__(self, tools: Tools):
-        self.tools = tools
+        self.tools = tools.emb
 
     def build(self, sentence, uuid):
         raise NotImplementedError
@@ -17,14 +17,14 @@ class MorphBuilder(Builder):
         super().__init__(tools)
 
     def build(self, sentence, uuid):
-        if uuid is not None:
-            if Settings(uuid).is_speller_enabled():
-                corrected_text = SpellCorrector().correct(sentence)
-            else:
-                corrected_text = sentence
-        else:
-            corrected_text = SpellCorrector().correct(sentence)
+        # if uuid is not None:
+        #     if Settings(uuid).is_speller_enabled():
+        #         corrected_text = SpellCorrector().correct(sentence)
+        #     else:
+        #         corrected_text = sentence
+        # else:
+        #     corrected_text = SpellCorrector().correct(sentence)
 
-        doc_parser = DocParser(self.tools, corrected_text)
+        doc_parser = DocParser(self.tools, sentence)
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)
         return normalized_intent
