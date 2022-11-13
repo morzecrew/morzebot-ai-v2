@@ -1,17 +1,25 @@
-from navec import Navec
-import numpy as np
-from numpy.linalg import norm
+import json
+import os
+
 
 from lib.preprocessing import Preprocessing
-from lib.similarity import CosinSimilarity
+from lib.similarity import Evaluation
+
+DATA_PATH = os.path.join(os.getcwd(),os.path.join("data", "user_intents.json"))
+
+
+def _read_json():
+    file = open(DATA_PATH, encoding='UTF-8')
+    return json.loads(file.read())
 
 
 class IntentCatcher:
-    def __init__(self, user_sent, user_intent, emb: Preprocessing):  # user_sent = "hui", user_intent = {"hui":["hui and","chlen"], "":[]}
+    def __init__(self, user_sent, emb: Preprocessing):  # user_sent = "hui", user_intent = {"hui":["hui and","chlen"], "":[]}
         self.user_sent = user_sent
-        self.user_intents = user_intent
+        self.user_intents = _read_json()
         self.emb = emb
-        self.cos = CosinSimilarity()
+        self.cos = Evaluation()
+        self.max_cos = 0.6
 
     def __get_sent_emb(self):
         user_sent_emb = self.emb.preprocessing(self.user_sent)  # user = "Ну и хуита же" --> [0.1, 0.04 ... N]
@@ -26,11 +34,21 @@ class IntentCatcher:
     def get_intent(self):
         user_sent_emb = self.__get_sent_emb()
         user_intents_emb = self.__get_intent_emb()
-        max_cos = -1
+        max_cos = 0.6 #FIX ME
         for key_intent, user_intent_emb in user_intents_emb.items():
             for element in user_intent_emb:
-                cosine = self.cos.cos_sim(user_sent_emb, element)
-                print(cosine)
+                cosine = self.cos.cos_dist(user_sent_emb, element)
                 if cosine > max_cos:
-                    max_cos = cosine
-                    return key_intent
+                    result = self.__get_id(key_intent,user_sent_emb,user_intents_emb )
+                    return result
+
+    def __get_id(self, intent_key, user_sent_emb, user_intents_emb):
+        user_sent_split = self.user_sent.split()
+        for iter, token_emb in enumerate(user_sent_emb):
+            for intent_emb in user_intents_emb[intent_key]:
+                cosine = self.cos.cos_dist(intent_emb, token_emb)
+                if cosine > self.max_cos:
+                    return {"intent": intent_key, "user_sent": user_sent_split[iter]}
+
+
+#по эмбедингам найти косинуснове расстояние а потом вернуть индекс элемента
