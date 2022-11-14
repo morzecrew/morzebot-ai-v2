@@ -1,46 +1,41 @@
-import os
-from navec import Navec
-from sklearn.metrics.pairwise import cosine_similarity;
-from faq.embedding import getPhraseEmbedding
+from lib.preprocessing import Preprocessing
+from lib.similarity import Evaluation
+from morph_tagging.sent_cleaner import SentenceCleaner
 from faq.csv_worker import TableWorker
-
-# Load dataset and examine dataset, rename columns to questions and answers
-DATA_PATH = os.path.join(os.path.dirname(os.getcwd()), os.path.join("data", "hudlit_12B_500K_300d_100q.tar"))
-
-try:
-    navec = Navec.load(DATA_PATH)
-except:
-    navec = None
+import numpy as np
 
 
 class FAQAnswerer:
-    def __init__(self, model=navec):
-        self.model = model
+    def __init__(self, model, treshold=0.4):
+        self.emb = Preprocessing(model)
+        self.threshold = treshold
         # pass
 
-    def answer(self, question, FAQ_data=TableWorker().table):
-        if self.model:
+    def answer(self, cleaned_question, FAQ_data=TableWorker().table):
+        if self.emb:
             pass
         else:
             return None
+
+        faq_sentences = FAQ_data['Question']
+
+        cleaned_sentences = SentenceCleaner().clean_sentence(faq_sentences, lower=True, stopwords=True)
+
+        sent_embeddings = self.emb.preprocessing(cleaned_sentences)
+        question_embedding = self.emb.preprocessing(cleaned_question)
+
+        # Compute cos
         max_sim = -1;
         index_sim = -1;
-        sent_embeddings = [];
-        ##FIXME: add stop words and garbage words deleter
-        cleaned_sentences = FAQ_data['Question']
-        ##
 
-        for sent in cleaned_sentences:
-            sent_embeddings.append(self.__sent_embedding(sent))
-        question_embedding = self.__sent_embedding(question)
         for index, faq_embedding in enumerate(sent_embeddings):
-            sim = cosine_similarity(faq_embedding, question_embedding)[0][0];
-            # print(index, sim, cleaned_sentences[index])
+            sim = Evaluation().cos_dist(faq_embedding, question_embedding)
             if sim > max_sim:
-                max_sim = sim;
-                index_sim = index;
-        # print(FAQ_data.iloc[index_sim, 0])
-        return FAQ_data.iloc[index_sim, 1]
+                max_sim = sim
+                index_sim = index
 
-    def __sent_embedding(self, sent):
-        return getPhraseEmbedding(sent, self.model)
+        if (max_sim >= self.threshold):
+            # FAQ_data.iloc[index_sim, 0]
+            return FAQ_data.iloc[index_sim, 1]
+        else:
+            return None
