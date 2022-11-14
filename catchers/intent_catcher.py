@@ -4,7 +4,7 @@ import os
 from natasha import Doc
 
 
-class IntentCatcher:
+class IntentCatchers:
     def __init__(self):
         pass
 

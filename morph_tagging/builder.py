@@ -16,7 +16,7 @@ class MorphBuilder(Builder):
     def __init__(self, tools: Tools):
         super().__init__(tools)
 
-    def build(self, sentence, uuid):
+    def build(self, sentence):
         # if uuid is not None:
         #     if Settings(uuid).is_speller_enabled():
         #         corrected_text = SpellCorrector().correct(sentence)

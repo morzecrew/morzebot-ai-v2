@@ -8,17 +8,22 @@ class Preprocessing:
 
     def preprocessing(self, text):
         if isinstance(text, str):
-            tokens = self.__tokenizer_sent(text) # "Привет как дела" --> ["привет","как","дела"]
-            word_emb = self.__word_emb(tokens) #["привет","как","дела"] --> [[0.1, 0.1...], [...], [...]]
-            sent_emb = self.__sent_emb(word_emb) #[[0.1, 0.1...], [...], [...]] --> [0.1, 0.03, ...]
-            word_and_emb = list(tokens)
-            for count in range(word_and_emb):
-                if count % 2 != 0:
-                    word_and_emb.append(word_emb[count]) # --> ["привет", [0.1, 0.1...],"как",[...], "дела",[...]]
-            result = {"user_word": word_and_emb,"user_sent":[text, sent_emb]}
+            tokens = self.__tokenizer_sent(text)  # "Привет как дела" --> ["привет","как","дела"]
+            word_emb = self.__word_emb(tokens)  # ["привет","как","дела"] --> [[0.1, 0.1...], [...], [...]]
+            sent_emb = self.__sent_emb(word_emb)  # [[0.1, 0.1...], [...], [...]] --> [0.1, 0.03, ...]
 
+            # ----- 1 -----------------------
+            # word_and_emb = []
+            # for count in range(len(tokens)):
+            #     word_and_emb.append(tokens[count])
+            #     word_and_emb.append(word_emb[count])  # --> ["привет", [0.1, 0.1...],"как",[...], "дела",[...]]
+            # result = {"user_word": word_and_emb, "user_sent": [text, sent_emb]}
 
-
+            # ----- 2 -------------------------
+            word_and_emb = {}
+            for count in range(len(tokens)):
+                word_and_emb[tokens[count]] = word_emb[count]
+            result = {"user_word_and_emb": word_and_emb, "user_sent_and_emb": {text: sent_emb}}
 
         elif isinstance(text, list):
             tokens = self.__tokenizer_intent(text)
@@ -26,13 +31,12 @@ class Preprocessing:
             sent_emb = [self.__sent_emb(emb_element) for emb_element in word_emb]
             result = sent_emb
 
-
         else:
-            #sent_emb = []
+            # sent_emb = []
             result = []
 
         # sent_sum_emb = self.__sent_sum_emb(word_emb)
-        return result #sent_emb
+        return result  # sent_emb
 
     def __tokenizer_sent(self, text: str):  # text = "abc bca ass" --> ["abc", "bca", "ass"]
         user_sent_tokens = list(tokenize(text))
