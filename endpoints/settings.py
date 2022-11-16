@@ -10,13 +10,11 @@ settings_router = APIRouter(
 
 class Settings(BaseModel):
     uuid: str
-    global_: bool
     settings: dict
 
 
 @settings_router.post("/")
 def set_settings(sett: Settings):
-    # TODO: add logic for global_
     insert_settings(sett.uuid, sett.settings)
     return {'code': 200, 'status': 'ok'}
 

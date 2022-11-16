@@ -25,8 +25,8 @@ class FAQAnswerer:
         question_embedding = self.emb.preprocessing(cleaned_question)
 
         # Compute cos
-        max_sim = -1;
-        index_sim = -1;
+        max_sim = -1
+        index_sim = -1
 
         for index, faq_embedding in enumerate(sent_embeddings):
             sim = Evaluation().cos_dist(faq_embedding, question_embedding)
@@ -34,7 +34,7 @@ class FAQAnswerer:
                 max_sim = sim
                 index_sim = index
 
-        if (max_sim >= self.threshold):
+        if max_sim >= self.threshold:
             # FAQ_data.iloc[index_sim, 0]
             return FAQ_data.iloc[index_sim, 1]
         else:
