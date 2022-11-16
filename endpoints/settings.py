@@ -14,15 +14,15 @@ class Settings(BaseModel):
     settings: dict
 
 
-@settings_router.post("/set")
+@settings_router.post("/")
 def set_settings(sett: Settings):
     # TODO: add logic for global_
     insert_settings(sett.uuid, sett.settings)
     return {'code': 200, 'status': 'ok'}
 
 
-@settings_router.get("/get")
-def get_settings(uuid: str, global_: bool):
+@settings_router.get("/")
+def get_settings(uuid: str):
     settings = get_settings_by_uuid(uuid)
     if settings:
         del settings["_id"]

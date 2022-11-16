@@ -19,11 +19,14 @@ class MorphBuilder(Builder):
 
     def build(self, sentence, uuid):
         cleaned_text = SentenceCleaner().clean_sentence(sentence, lower=True, stopwords=True)
-        if Settings(uuid).is_speller_enabled():
-            corrected_text = SpellCorrector().correct(cleaned_text)
-            doc_parser = DocParser(self.tools, corrected_text)
+        if uuid is not None:
+            if Settings(uuid).is_speller_enabled():
+                corrected_text = SpellCorrector().correct(cleaned_text)
+                doc_parser = DocParser(self.tools, corrected_text)
+            else:
+                doc_parser = DocParser(self.tools, cleaned_text)
         else:
-            doc_parser = DocParser(self.tools, cleaned_text)
+            corrected_text = cleaned_text
 
         normalized_intent = Normalizer(self.tools).normalize(doc_parser)
         return normalized_intent

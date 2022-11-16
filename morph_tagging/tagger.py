@@ -18,6 +18,17 @@ from natasha import (
 
 
 class Tools:
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+
+        return cls.__instance
+
+    def __del__(self):
+        Tools.__instance = None
+
     def __init__(self):
         self.segmenter = Segmenter()
         self.morph_vocab = MorphVocab()
@@ -61,7 +72,7 @@ class Normalizer:
         # self.__normalize(doc)
 
         # TODO: RESPONSE
-        return {_.text: _.lemma for _ in doc.tokens}
+        return doc
 
     def __lemmatize(self, doc):
         for token in doc.tokens:

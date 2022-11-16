@@ -3,14 +3,13 @@ import pytest
 from answer_catcher.answer_catcher import AnswerCatcher
 from intent_catcher.intent_catcher import NatashaCatcher, IntentCatcher
 from morph_tagging.builder import MorphBuilder, Builder
-from morph_tagging.spell_checker import SpellCorrector
-from morph_tagging.tagger import Tools, DocParser
+from morph_tagging.tagger import Tools
 
 
 def generate_result(user_sentence):
     tools = Tools()
     builder: Builder = MorphBuilder(tools=tools)
-    normal_sentence = builder.build(sentence=user_sentence)
+    normal_sentence = builder.build(sentence=user_sentence, uuid=None)
     catcher: IntentCatcher = NatashaCatcher(normal_sentence)
     response = catcher.catch()
     return AnswerCatcher().catch_answer(response)
