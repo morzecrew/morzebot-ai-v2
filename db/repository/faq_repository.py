@@ -8,11 +8,12 @@ def is_faq_dataset_exists(criteria: object):
 
 
 def insert_faq_dataset(uuid: str, data: bytes):
+    db[COLLECTION_NAME].delete_one({'uuid': uuid})
     result = db[COLLECTION_NAME].insert_one({'uuid': uuid, 'data': data})
     return result.inserted_id
 
 
-def insert_new_string(uuid: str, data: str):
+def insert_new_row(uuid: str, data: str):
     if is_faq_dataset_exists({'uuid': uuid}):
         db[COLLECTION_NAME].update_one({'uuid': uuid}, {"$set": {"data": data}})
     else:
