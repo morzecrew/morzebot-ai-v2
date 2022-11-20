@@ -23,6 +23,7 @@ class IntentCatcher:
     def get_intent(self):
         user_sent_emb = self.__get_sent_emb()
         user_intents_emb = self.__get_intent_emb()
+        threshold = 0.1
         cosine = []
         max_cos = -1
         intent = ""
@@ -30,7 +31,7 @@ class IntentCatcher:
             for element in user_intent_emb:
                 cosine.append(self.cos.cos_dist(user_sent_emb['user_sent_and_emb'][self.user_sent], element))
             max_simil = max(cosine)
-            if max_simil > max_cos and max_simil > 0.1:
+            if max_simil > max_cos and max_simil > threshold:
                 max_cos = max_simil
                 intent = key_intent
         if len(intent) > 0:
