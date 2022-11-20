@@ -11,15 +11,6 @@ class Preprocessing:
             tokens = self.__tokenizer_sent(text)  # "Привет как дела" --> ["привет","как","дела"]
             word_emb = self.__word_emb(tokens)  # ["привет","как","дела"] --> [[0.1, 0.1...], [...], [...]]
             sent_emb = self.__sent_emb(word_emb)  # [[0.1, 0.1...], [...], [...]] --> [0.1, 0.03, ...]
-
-            # ----- 1 -----------------------
-            # word_and_emb = []
-            # for count in range(len(tokens)):
-            #     word_and_emb.append(tokens[count])
-            #     word_and_emb.append(word_emb[count])  # --> ["привет", [0.1, 0.1...],"как",[...], "дела",[...]]
-            # result = {"user_word": word_and_emb, "user_sent": [text, sent_emb]}
-
-            # ----- 2 -------------------------
             word_and_emb = {}
             for count in range(len(tokens)):
                 word_and_emb[tokens[count]] = word_emb[count]
@@ -47,6 +38,7 @@ class Preprocessing:
         user_intent = [self.__tokenizer_sent(intent) for intent in text]
         return user_intent
 
+    # FIX ME
     def __word_emb(self, text: list):  # text = ["hui", "moy"] --> [array([0.12, 0.15, 0.45, ... N=300]), array([0.34, 0.15, 0.05, ... N=300])]
         samp = self.model_emb['навек']
         try:
