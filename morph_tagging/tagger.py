@@ -83,3 +83,5 @@ class Normalizer:
         for span in doc.spans:
             span.normalize(self.tools.morph_vocab)
         return doc
+
+

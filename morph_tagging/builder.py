@@ -6,7 +6,7 @@ from tools.settings import Settings
 
 class Builder:
     def __init__(self, tools: Tools):
-        self.tools = tools.emb
+        pass
 
     def build(self, sentence, uuid):
         raise NotImplementedError
@@ -15,6 +15,7 @@ class Builder:
 class MorphBuilder(Builder):
     def __init__(self, tools: Tools):
         super().__init__(tools)
+        self.tools = tools
 
     def build(self, sentence):
         # if uuid is not None:
