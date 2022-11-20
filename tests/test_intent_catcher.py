@@ -1,12 +1,12 @@
 import pytest
 
 from answer_catcher.answer_catcher import AnswerCatcher
-from catchers.intent_catcher_with_cos_dist import IntentCatcher
+from intent_catcher.intent_catcher_with_cos_dist import IntentCatcher
 from lib.preprocessing import Preprocessing
 from morph_tagging.builder import MorphBuilder, Builder
 #from morph_tagging.spell_checker import SpellCorrector
-from morph_tagging.tagger import Tools, DocParser
-from variable_case.variable_reserve import ReserveCatcher, VariableCatcher
+from morph_tagging.tagger import Tools
+from variables_catcher.case_variable_reserve import ReserveCatcher
 
 
 def generate_result(user_sentence):
