@@ -15,7 +15,7 @@ def get_settings_by_uuid(uuid: str) -> int:
     return db[COLLECTION_NAME].find_one({"uuid": uuid})
 
 
-def is_uuid_exists(uuid):
-    if db[COLLECTION_NAME].find_one({"uuid": uuid}):
+def is_uuid_exists(uuid: str):
+    if db[COLLECTION_NAME].count_documents({"uuid": uuid}):
         return True
     return False
