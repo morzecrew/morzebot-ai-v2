@@ -1,3 +1,13 @@
+#### START DEVELOPMENT SERVER
+1. Start uvicorn server with 
+```commandline
+    uvicorn server:app --reload
+```
+2. Start mongo database
+```commandline
+   sudo docker-compose up mongo 
+```
+
 #### Work with JamSpell
 * Linux/MacOS Users:
 1. Manually download swig3.0.12 via [sourceforce](http://prdownloads.sourceforge.net/swig/swig-3.0.12.tar.gz)

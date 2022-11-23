@@ -6,18 +6,20 @@ import numpy as np
 
 
 class FAQAnswerer:
-    def __init__(self, model, treshold=0.4):
+    def __init__(self, uuid: str, model, treshold=0.4):
         self.emb = Preprocessing(model)
         self.threshold = treshold
+        self.uuid = uuid
         # pass
 
-    def answer(self, cleaned_question, FAQ_data=TableWorker().table):
+    def answer(self, cleaned_question):
+        faq_data = TableWorker(self.uuid).table
         if self.emb:
             pass
         else:
             return None
 
-        faq_sentences = FAQ_data['Question']
+        faq_sentences = faq_data['Question']
 
         cleaned_sentences = SentenceCleaner().clean_sentence(faq_sentences, lower=True, stopwords=True)
 
@@ -36,6 +38,6 @@ class FAQAnswerer:
 
         if max_sim >= self.threshold:
             # FAQ_data.iloc[index_sim, 0]
-            return FAQ_data.iloc[index_sim, 1]
+            return faq_data.iloc[index_sim, 1]
         else:
             return None
