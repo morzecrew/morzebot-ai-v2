@@ -18,7 +18,7 @@ async def upload_dataset(uuid: str, file: UploadFile):
 
 
 @faq_router.get("/")
-async def get_settings(uuid: str):
+async def get_dataset(uuid: str):
     faq_dataset = get_faq_dataset_by_uuid(uuid)
     if faq_dataset:
         del faq_dataset["_id"]
@@ -27,7 +27,7 @@ async def get_settings(uuid: str):
 
 
 @faq_router.post("/add_row")
-def add_intents(uuid: str, question: str, answer: str):
+def add_new_row(uuid: str, question: str, answer: str):
     is_exist = is_faq_dataset_exists({'uuid': uuid})
     if is_exist:
         dataset = get_faq_dataset_by_uuid(uuid)['data']
