@@ -8,7 +8,7 @@ from transformers import AutoTokenizer, AutoModel, AutoConfig
 # BertTokenizer.from_pretrained(PATH, local_files_only=True)
 import os
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), os.path.join(os.path.join("data", "bert"),'tiny_bert'))
+DATA_PATH = os.path.join(os.getcwd(), os.path.join(os.path.join("data", "bert"),'tiny_bert'))
 
 config = AutoConfig.from_pretrained(os.path.join(DATA_PATH,'config.json'))
 model = AutoModel.from_pretrained(os.path.join(DATA_PATH,'pytorch_model.bin'), config=config,

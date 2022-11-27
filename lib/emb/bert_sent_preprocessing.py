@@ -7,7 +7,7 @@ import os
 
 
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), os.path.join(os.path.join("data", "bert"),'tiny_bert'))
+DATA_PATH = os.path.join(os.getcwd(), os.path.join(os.path.join("data", "bert"),'tiny_bert'))
 model = SentenceTransformer(DATA_PATH)
 # model.cuda()  # uncomment it if you have a GPU
 
