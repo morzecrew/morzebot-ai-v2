@@ -20,7 +20,7 @@ def _read_json():
     return json.loads(file.read())
 
 
-class NatashaCatcher(IntentCatcher):
+class NatashaCatcher(IntentCatchers):
     def __init__(self, normal_sentence: Doc):
         super().__init__()
         self.normal_sentence = normal_sentence

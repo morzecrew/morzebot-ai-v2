@@ -25,7 +25,7 @@ async def send_sentence(sentence: str, uuid: str):
     builder: Builder = MorphBuilder(tools=tools)
     normal_sentence = builder.build(sentence=sentence, uuid=uuid)
 
-    catcher: IntentCatcher = NatashaCatcher(normal_sentence)
-    response = catcher.catch()
+    catcher: IntentCatcher = IntentCatcher(sentence)
+    response = catcher.get_intent()
 
     return {"intent": response}
