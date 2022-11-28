@@ -2,7 +2,7 @@ import json
 import os
 
 
-from lib.preprocessing import Preprocessing
+from lib.emb.preprocessing import Preprocessing
 from lib.similarity import Evaluation
 
 DATA_PATH = os.path.join(os.getcwd(),os.path.join("data", "user_intents.json"))

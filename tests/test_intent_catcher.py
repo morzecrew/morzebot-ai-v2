@@ -2,7 +2,7 @@ import pytest
 
 from answer_catcher.answer_catcher import AnswerCatcher
 from intent_catcher.intent_catcher_with_cos_dist import IntentCatcher
-from lib.preprocessing import Preprocessing
+from lib.emb.navec_preprocessing import NavecEmb
 from morph_tagging.builder import MorphBuilder, Builder
 #from morph_tagging.spell_checker import SpellCorrector
 from morph_tagging.tagger import Tools
@@ -14,7 +14,7 @@ def generate_result(user_sentence):
     builder: Builder = MorphBuilder(tools=tools)
     normal_sentence = builder.build(sentence=user_sentence)
     #print("normal", normal_sentence)
-    emb = Preprocessing(model_emb=tools.emb)
+    emb = NavecEmb(model_emb=tools.emb)
     catcher = IntentCatcher(user_sentence, emb)
     intent_response = catcher.get_intent()
     print(intent_response)
