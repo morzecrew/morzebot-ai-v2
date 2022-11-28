@@ -39,14 +39,15 @@ class NavecEmb(Preprocessing):
         user_intent = [self.__tokenizer_sent(intent) for intent in text]
         return user_intent
 
-    # FIX ME
     def __word_emb(self,
                    text: list):  # text = ["hui", "moy"] --> [array([0.12, 0.15, 0.45, ... N=300]), array([0.34, 0.15, 0.05, ... N=300])]
         samp = self.model_emb['навек']
-        try:
-            word_emb = [self.model_emb[token] for token in text]
-        except:
-            word_emb = [0] * len(samp)
+        word_emb = []
+        for token in text:
+            try:
+                word_emb.append(self.model_emb[token])
+            except:
+                word_emb.append(np.array([0] * len(samp)))
         return word_emb
 
     def __sent_emb(self, text_emb):
