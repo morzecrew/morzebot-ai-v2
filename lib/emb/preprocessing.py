@@ -1,6 +1,6 @@
 class Preprocessing:
-    def __init__(self, model_emb=None):
-        self.model_emb = model_emb
+    def __init__(self):
+        pass
 
     def preprocessing(self, text):
         raise NotImplementedError

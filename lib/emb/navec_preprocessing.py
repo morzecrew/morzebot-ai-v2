@@ -4,6 +4,7 @@ from lib.emb.preprocessing import Preprocessing
 
 class NavecEmb(Preprocessing):
     def __init__(self, model_emb=None):
+        super().__init__()
         self.model_emb = model_emb
 
     def preprocessing(self, text):

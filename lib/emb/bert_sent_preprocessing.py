@@ -13,6 +13,7 @@ model = SentenceTransformer(DATA_PATH)
 
 class BERTSentEmb(Preprocessing):
     def __init__(self, model_emb=model):
+        super().__init__()
         self.model_emb = model_emb
 
     def preprocessing(self, text):
