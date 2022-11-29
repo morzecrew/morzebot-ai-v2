@@ -33,6 +33,7 @@ mod = BERTModelWrapper()
 
 class BERTEmb(Preprocessing):
     def __init__(self, model_emb=mod):
+        super().__init__()
         self.model_emb = model_emb
 
     def preprocessing(self, text):
