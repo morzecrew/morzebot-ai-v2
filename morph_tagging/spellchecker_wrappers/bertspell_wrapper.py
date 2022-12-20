@@ -41,7 +41,7 @@ print(tokenizer.batch_decode(predicts, skip_special_tokens=True))
 
 class T5BERTModelWrapper:
     def __init__(self, model=model, tokenizer=tokenizer):
-        self.model = model
+        super().__init__(model)
         self.tokenizer = tokenizer
 
     def correct(self, sentense):
