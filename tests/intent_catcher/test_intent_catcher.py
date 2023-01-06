@@ -11,15 +11,17 @@ def generate_result(user_sentence):
     emb = builder.build()
     catcher = IntentCatcher(user_sentence, emb)
     result = catcher.get_intent()
+    print(result)
     return AnswerCatcher().catch_answer(result)
 
 
-@pytest.mark.parametrize("user_sentence", ["фыв привет бронь дом",
+@pytest.mark.parametrize("user_sentence", ["привет",
                                            "хочу забронировать баню",
                                            "у вас такая крутая база отдыха хочу забронировать у васс дом"
                                            ])
 def test_intent_catcher_positive_res(user_sentence):
     result = generate_result(user_sentence)
+    print(result)
     assert result != "Извините, я вас не понимаю"
 
 

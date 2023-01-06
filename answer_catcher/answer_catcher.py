@@ -15,11 +15,11 @@ class AnswerCatcher:
     def catch_answer(self, intent):
         user_answers = _read_json()
 
-        if intent is None:
-            return user_answers["default"]
+        # if intent is None:
+        #     return user_answers["default"]
 
         for key, value in user_answers.items():
-            if key == intent["key"]:
+            if key == intent["intent"]:
                 return value
 
         return user_answers["default"]
