@@ -1,16 +1,12 @@
-
 class IdCatcher:
     def __init__(self):
         pass
 
-    def catch(self):
+    def get_variable(self):
         raise NotImplementedError
 
-    def get_variable(self):
-        pass
 
-
-class VariableCatcher(IdCatcher):
+class RecVariableCatcher(IdCatcher):
     def __init__(self, intent: dict, normalize_doc):
         super().__init__()
         self.intent_head_id = intent
