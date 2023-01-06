@@ -2,6 +2,7 @@ from threading import Lock
 import json
 import os
 
+from data.path_to_data import get_data_path
 from lib.emb.preprocessing import Preprocessing
 
 
@@ -19,7 +20,7 @@ class SingletonBase(type):
         SingletonBase.__instances = None
 
 
-DATA_PATH = os.path.join(os.getcwd(), os.path.join("data", "user_intents.json"))
+DATA_PATH = os.path.join(get_data_path(), "user_intents.json")
 
 
 def read_json():

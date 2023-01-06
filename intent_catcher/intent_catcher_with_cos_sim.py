@@ -1,4 +1,4 @@
-from intent_catcher.get_intents import GetIntentsEmb
+from get_intents import GetIntentsEmb
 from lib.emb.preprocessing import Preprocessing
 from lib.similarity import Evaluation
 
