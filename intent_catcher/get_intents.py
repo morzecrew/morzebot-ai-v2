@@ -22,14 +22,14 @@ class SingletonBase(type):
 DATA_PATH = os.path.join(os.getcwd(), os.path.join("data", "user_intents.json"))
 
 
-def _read_json():
+def read_json():
     file = open(DATA_PATH, encoding='UTF-8')
     return json.loads(file.read())
 
 
 class GetIntentsEmb(metaclass=SingletonBase):
     def __init__(self, emb: Preprocessing):
-        self.user_intents = _read_json()
+        self.user_intents = read_json()
         self.emb = emb
 
     def get_intent_emb(self):
