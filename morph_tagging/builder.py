@@ -36,9 +36,8 @@ class MorphBuilder(Builder):
         return normalized_intent
 
 
-class EmbedderBuilder(Builder):
+class EmbedderBuilder:
     def __init__(self, emb_models_name: str = None):
-        super().__init__()
         self.model = emb_models_name
 
     def build(self):
