@@ -32,8 +32,8 @@ class T5Model():
 
 
 chat_model = T5Model(model=model, tokenizer=tokenizer,
-                     do_sample=True, top_p=0.4, num_return_sequences=1,
-                     repetition_penalty=1.5,
+                     do_sample=True, top_p=0.5, num_return_sequences=1,
+                     repetition_penalty=2.0,
                      max_length=32)
 
 
@@ -62,6 +62,3 @@ class T5ChitChat(ChitChat):
         for h in hypotheses:
             response_list.append(self.chatbot.tokenizer.decode(h, skip_special_tokens=True))
         return response_list
-
-# text = 'Здравствуйте я Егор'
-# print(T5ChitChat().response(text))

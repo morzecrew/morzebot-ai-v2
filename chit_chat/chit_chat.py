@@ -1,5 +1,5 @@
 class ChitChat():
-    def __init__(self,chatbot):
+    def __init__(self, chatbot):
         self.chatbot = chatbot
 
     def train(self):
