@@ -7,10 +7,13 @@ import torch
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 import os
 
+TOKEN_HUGGINGFACE = os.getenv("TOKEN_HUGGINGFACE")
+
 
 def get_models_path(name):
     model_path = {"tiny-bert": "cointegrated/rubert-tiny", "tiny-bert2": "cointegrated/rubert-tiny2",
-                  "LaBSE-en-ru": "cointegrated/LaBSE-en-ru", "rubert-tiny2-tuned": "morzecrew/rubert-tiny2-finetuned-embedding"}
+                  "LaBSE-en-ru": "cointegrated/LaBSE-en-ru",
+                  "rubert-tiny2-tuned": "morzecrew/rubert-tiny2-finetuned-embedding"}
     return model_path[name]
 
 
@@ -22,12 +25,13 @@ class PretrainedModels:
         model_path = get_models_path(model_name)
         try:
             if token:
-                tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True,
+                                                                use_auth_token=TOKEN_HUGGINGFACE)
             else:
                 tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
         except:
             if token:
-                tokenizer_model = AutoTokenizer.from_pretrained(model_path, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path, use_auth_token=TOKEN_HUGGINGFACE)
             else:
                 tokenizer_model = AutoTokenizer.from_pretrained(model_path)
         return tokenizer_model
@@ -36,12 +40,13 @@ class PretrainedModels:
         model_path = get_models_path(model_name)
         try:
             if token:
-                emb_model = AutoModel.from_pretrained(model_path, local_files_only=True, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+                emb_model = AutoModel.from_pretrained(model_path, local_files_only=True,
+                                                      use_auth_token=TOKEN_HUGGINGFACE)
             else:
                 emb_model = AutoModel.from_pretrained(model_path, local_files_only=True)
         except:
             if token:
-                emb_model = AutoModel.from_pretrained(model_path, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+                emb_model = AutoModel.from_pretrained(model_path, use_auth_token=TOKEN_HUGGINGFACE)
             else:
                 emb_model = AutoModel.from_pretrained(model_path)
         return emb_model

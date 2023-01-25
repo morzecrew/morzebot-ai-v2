@@ -62,3 +62,6 @@ class T5ChitChat(ChitChat):
         for h in hypotheses:
             response_list.append(self.chatbot.tokenizer.decode(h, skip_special_tokens=True))
         return response_list
+
+
+t5_chit_chat = T5ChitChat()
