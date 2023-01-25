@@ -1,13 +1,15 @@
 import pytest
-
+from dotenv import load_dotenv
 from answer_catcher.answer_catcher import AnswerCatcher
 from intent_catcher.intent_catcher_with_cos_sim import IntentCatcher
 from morph_tagging.builder import EmbedderBuilder
 from morph_tagging.tagger import Tools
 
+load_dotenv()
+
 
 def generate_result(user_sentence):
-    builder = EmbedderBuilder("tiny-bert2")
+    builder = EmbedderBuilder("rubert-tiny2-tuned")
     emb = builder.build()
     catcher = IntentCatcher(user_sentence, emb)
     result = catcher.get_intent()
@@ -16,7 +18,7 @@ def generate_result(user_sentence):
 
 
 @pytest.mark.parametrize("user_sentence", ["привет",
-                                           "здарова",
+                                           "извините расскажи о ваших преимуществах",
                                            "какие твои услуги",
                                            "В чем ваше преимущество",
                                            "Расскажи о команде",

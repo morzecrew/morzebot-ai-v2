@@ -35,5 +35,6 @@ async def send_sentence(sentence: str, uuid: str):
     emb = builder.build()
     catcher = IntentCatcher(sentence, emb)
     result = catcher.get_intent()
-
+    # TODO add chit chat
     return result
+

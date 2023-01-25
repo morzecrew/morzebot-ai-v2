@@ -10,7 +10,7 @@ import os
 
 def get_models_path(name):
     model_path = {"tiny-bert": "cointegrated/rubert-tiny", "tiny-bert2": "cointegrated/rubert-tiny2",
-                  "LaBSE-en-ru": "cointegrated/LaBSE-en-ru"}
+                  "LaBSE-en-ru": "cointegrated/LaBSE-en-ru", "rubert-tiny2-tuned": "morzecrew/rubert-tiny2-finetuned-embedding"}
     return model_path[name]
 
 
@@ -18,20 +18,32 @@ class PretrainedModels:
     def __init__(self):
         pass
 
-    def tokenizer(self, model_name: str):
+    def tokenizer(self, model_name: str, token=False):
         model_path = get_models_path(model_name)
         try:
-            tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
+            if token:
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+            else:
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path, local_files_only=True)
         except:
-            tokenizer_model = AutoTokenizer.from_pretrained(model_path)
+            if token:
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+            else:
+                tokenizer_model = AutoTokenizer.from_pretrained(model_path)
         return tokenizer_model
 
-    def model(self, model_name: str):
+    def model(self, model_name: str, token=False):
         model_path = get_models_path(model_name)
         try:
-            emb_model = AutoModel.from_pretrained(model_path, local_files_only=True)
+            if token:
+                emb_model = AutoModel.from_pretrained(model_path, local_files_only=True, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+            else:
+                emb_model = AutoModel.from_pretrained(model_path, local_files_only=True)
         except:
-            emb_model = AutoModel.from_pretrained(model_path)
+            if token:
+                emb_model = AutoModel.from_pretrained(model_path, use_auth_token=os.getenv("HUGFACE_TOKEN"))
+            else:
+                emb_model = AutoModel.from_pretrained(model_path)
         return emb_model
 
 

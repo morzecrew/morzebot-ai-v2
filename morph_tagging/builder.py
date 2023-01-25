@@ -52,6 +52,13 @@ class EmbedderBuilder:
             tools = Tools()
             emb = NavecEmb(model_emb=tools.emb)
             return emb
+        if self.model == "rubert-tiny2-tuned":
+            pretrained = PretrainedModels()
+            tokenizer = pretrained.tokenizer(self.model, token=True)
+            model = pretrained.model(self.model, token=True)
+            wrapper = BERTModelWrapper(model, tokenizer)
+            bert = BERTEmb(wrapper)
+            return bert
         else:
             model_name = "tiny-bert"
             pretrained = PretrainedModels()
