@@ -16,19 +16,23 @@ def generate_result(user_sentence):
 
 
 @pytest.mark.parametrize("user_sentence", ["привет",
-                                           "хочу забронировать баню",
-                                           "у вас такая крутая база отдыха хочу забронировать у васс дом"
+                                           "здарова",
+                                           "какие твои услуги",
+                                           "В чем ваше преимущество",
+                                           "Расскажи о команде",
+                                           "Че по цене?"
                                            ])
 def test_intent_catcher_positive_res(user_sentence):
     result = generate_result(user_sentence)
     print(result)
-    assert result != "Извините, я вас не понимаю"
+    assert result != "default"
 
 
-@pytest.mark.parametrize("user_sentence", ["привет ты кто",
+@pytest.mark.parametrize("user_sentence", ["Извините я вас не понимаю",
                                            "как дела",
                                            "вау вот это да"])
 def test_intent_catcher_negative_res(user_sentence):
     result = generate_result(user_sentence)
+    print(result)
     with pytest.raises(AssertionError):
-        assert result != "Извините, я вас не понимаю"
+        assert result != "default"

@@ -10,7 +10,7 @@ import os
 
 def get_models_path(name):
     model_path = {"tiny-bert": "cointegrated/rubert-tiny", "tiny-bert2": "cointegrated/rubert-tiny2",
-                  "LaBSE-en-ru": " cointegrated/LaBSE-en-ru"}
+                  "LaBSE-en-ru": "cointegrated/LaBSE-en-ru"}
     return model_path[name]
 
 
