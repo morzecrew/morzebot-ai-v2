@@ -4,7 +4,7 @@ from answer_catcher.answer_catcher import AnswerCatcher
 from intent_catcher.intent_catcher import NatashaCatcher, IntentCatcher
 from morph_tagging.builder import MorphBuilder, Builder
 from morph_tagging.tagger import Tools, DocParser
-from intent_catcher.variable_catcher import IdCatcher, VariableCatcher
+
 
 
 def generate_result(sentence):

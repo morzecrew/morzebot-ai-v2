@@ -1,8 +1,8 @@
 from pymongo import MongoClient
+import os 
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DB_NAME = 'mz_bot_ai'
+MONGO_URL = os.getenv('MONGO_URL', default='mongodb://localhost:27017/mz_bot_ai')
+DB_NAME = os.getenv('MONGO_DB_NAME', default='mz_bot_ai')
 
-connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+connection = MongoClient(MONGO_URL)
 db = connection[DB_NAME]

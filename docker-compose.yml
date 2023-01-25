@@ -2,12 +2,14 @@ version: "3.1"
 
 services:
   app:
-    image: morzecrew/morzebot-admin:latest
+    #image: morzecrew/morzebot-ai-v2:latest
 #    restart: on-failure
     command: python3.8 server.py
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      MONGO_URL: <REPLACE_ME>
 
     volumes:
       - ./data:/mz_bot/ai/data
