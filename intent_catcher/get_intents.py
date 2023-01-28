@@ -35,6 +35,6 @@ class GetIntentsEmb(metaclass=SingletonBase):
 
     def get_intent_emb(self):
         user_intent_emb = {}
-        for key_intent, user_intent in self.user_intents.items():  # {"hui":["hui and","chlen"], "":[]} --> {"hui":[[0.03, 0.1],[0.02, 0.1]], "":[]}
+        for key_intent, user_intent in self.user_intents.items():  # {"hi":["hi and","how"], "":[]} --> {"hi":[[0.03, 0.1],[0.02, 0.1]], "":[]}
             user_intent_emb[key_intent] = self.emb.preprocessing(user_intent)
         return user_intent_emb

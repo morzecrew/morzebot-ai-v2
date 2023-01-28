@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 WORKDIR /mz_bot/ai
 
@@ -23,6 +23,6 @@ RUN chmod 777 ./data/swig-3.0.12
 RUN ./data/swig-3.0.12/configure && make && make install
 
 RUN swig -version
-RUN python3.8 -m pip install -r requirements.txt
+RUN python3.9 -m pip install -r requirements.txt
 
-RUN python3.8 .lib/trainer.py
+RUN python3.9 .lib/trainer.py

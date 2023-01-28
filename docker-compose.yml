@@ -4,7 +4,7 @@ services:
   app:
     #image: morzecrew/morzebot-ai-v2:latest
 #    restart: on-failure
-    command: python3.8 server.py
+    command: python3.9 server.py
     build:
       context: .
       dockerfile: Dockerfile
