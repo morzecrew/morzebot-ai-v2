@@ -8,12 +8,16 @@ import collections
 import pickle
 import numpy as np
 import os
+
+from lib.models_wrapper import ModelsWrapper
+
 Cs_range = np.round(np.logspace(-4, 5, 20), 4)
 gammas_range = np.round(np.logspace(-4, 5, 20), 4)
 
 
-class SVM:
+class SVM(ModelsWrapper):
     def __init__(self, kernel='linear'):
+        super().__init__()
         self.model = svm.SVC(kernel=kernel)
         self.kernel = kernel
         self.C = 0
@@ -49,14 +53,14 @@ class SVM:
 
     def load(self, filename):
         path = os.path.join(os.path.dirname(os.getcwd()), os.path.join("models", f'{filename}_{self.kernel}.pkl'))
-        with open("path", "rb") as f:
+        with open(path, "rb") as f:
             self.model = pickle.load(f)
         print("model loaded from", path)
 
     def predict(self, emb):
         label = self.model.predict(emb)
         prob = self.model.predict_proba(emb)[0][label]
-        return {'label': label, 'prob': prob}
+        return {'label': label.tolist()[0], 'prob': prob.tolist()[0]}
 
     def svm_grid_search(self, input, label, per, Cs_wide_range, gammas_wide_range):
         # split data
@@ -72,7 +76,7 @@ class SVM:
         print(min_size)
 
         cv = 5
-        if min_size < 5 and min_size >1:
+        if min_size < 5 and min_size > 1:
             cv = min_size
         clf = GridSearchCV(self.model, parameters, cv=min_size)
         print(y_train)
@@ -111,5 +115,3 @@ class SVM:
         # set colorbar
         plt.colorbar()
         plt.show()
-
-

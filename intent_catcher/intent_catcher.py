@@ -5,10 +5,11 @@ from natasha import Doc
 
 
 class IntentCatcher:
-    def __init__(self):
-        pass
+    def __init__(self,user_sent, emb):
+        self.user_sent = user_sent
+        self.emb = emb
 
-    def catch(self):
+    def get_intent(self):
         raise NotImplementedError
 
 

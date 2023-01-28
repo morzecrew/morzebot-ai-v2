@@ -5,7 +5,10 @@ from lib.torch_models.dataset import Data
 import numpy as np
 import os
 
+from lib.models_wrapper import ModelsWrapper
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 class Model(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
@@ -24,10 +27,9 @@ class Model(nn.Module):
         return out
 
 
-
-
-class NeuralNetwork:
-    def __init__(self, input_size, hidden_size, output_size):
+class NeuralNetwork(ModelsWrapper):
+    def __init__(self, input_size=10, hidden_size=60, output_size=1):
+        super().__init__()
         self.model = Model(input_size, hidden_size, output_size)
         self.input_size = input_size
         self.hidden_size = hidden_size
@@ -42,7 +44,7 @@ class NeuralNetwork:
                                   num_workers=num_workers)
         return train_loader
 
-    def train(self, input, label, learning_rate = 0.001, num_epoch = 190, batch_size=16):
+    def train(self, input, label, learning_rate=0.001, num_epoch=1000, batch_size=16):
         train_loader = self.create_loader(input, label, batch_size=batch_size)
         optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate)
         criterion = torch.nn.CrossEntropyLoss()
@@ -62,8 +64,7 @@ class NeuralNetwork:
 
         print(f'final losses: {loss.item():.4f}')
 
-        self.save('multiclass_classification_model')
-
+        self.save('fnn_model')
 
     def save(self, filename):
         path = os.path.join(os.path.dirname(os.getcwd()), os.path.join("models", f'{filename}.pth'))
@@ -77,7 +78,7 @@ class NeuralNetwork:
         torch.save(data, path)
         print(f'model saved at: {path}')
 
-    def load(self,filename):
+    def load(self, filename):
         path = os.path.join(os.path.dirname(os.getcwd()), os.path.join("models", f'{filename}.pth'))
         data = torch.load(path)
 
@@ -86,12 +87,12 @@ class NeuralNetwork:
         self.output_size = data["output_size"]
         self.model_state = data["model_state"]
 
-        self.model = Model(self.input_size,self.hidden_size,self.output_size)
+        self.model = Model(self.input_size, self.hidden_size, self.output_size)
         self.model.load_state_dict(self.model_state)
 
         print("model loaded from", path)
 
-    def predict(self,emb):
+    def predict(self, emb):
         array = np.array(emb)
         output = self.model(torch.from_numpy(array))
         _, predicted = torch.max(output.data, 1)

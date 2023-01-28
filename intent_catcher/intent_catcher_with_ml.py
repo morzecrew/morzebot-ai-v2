@@ -1,35 +1,31 @@
 from intent_catcher.get_intents import GetIntentsEmb
 from lib.emb.preprocessing import Preprocessing
+from lib.models_wrapper import ModelsWrapper
 from lib.similarity import Evaluation
-from intent_catcher import IntentCatcher
+from intent_catcher.intent_catcher import IntentCatcher
 
 
-class IntentCatcherCos(IntentCatcher):
-    def __init__(self, user_sent, emb: Preprocessing):
+class IntentCatcherML(IntentCatcher):
+    def __init__(self, user_sent, emb: Preprocessing, model: ModelsWrapper):
         super().__init__(user_sent, emb)
         self.cos = Evaluation()
+        self.user_sent = user_sent
+        self.cos = Evaluation()
         self.user_intents = GetIntentsEmb(emb)
+        self.model = model
 
     def get_intent(self):
         user_sent_emb = self.__get_sent_emb()
         user_intents_emb = self.user_intents.get_intent_emb()
-        threshold = 0.2
-        cosine = []
-        max_cos = -1
-        intent = ""
-        for key_intent, user_intent_emb in user_intents_emb.items():
-            # print(user_intent_emb)
-            print(key_intent)
-            for element in user_intent_emb:
-                cosine.append(self.cos.cos_dist(user_sent_emb['user_sent_and_emb'][self.user_sent], element))
-            max_simil = max(cosine)
-            if max_simil > max_cos and max_simil > threshold:
-                max_cos = max_simil
-                intent = key_intent
+        score = -1
+        prediction = self.model.predict(emb=user_sent_emb['user_sent_and_emb'][self.user_sent].reshape(1, -1))
+        intent = list(user_intents_emb.keys())[prediction['label']]
+        score = prediction['prob']
+
         if len(intent) > 0:
-            result = self.__get_word(intent, user_sent_emb, user_intents_emb, max_cos)
+            result = self.__get_word(intent, user_sent_emb, user_intents_emb, score)
         else:
-            result = {"intent": intent, "max_cosine_sent": max_cos, "user_sent": "", "max_cosine_word": -1}
+            result = {"intent": intent, "sent_score": score, "user_sent": "", "max_cosine_word": -1}
         return result
 
     def __get_word(self, intent_key, user_sent_emb, user_intents_emb, cos_sent):
@@ -41,7 +37,7 @@ class IntentCatcherCos(IntentCatcher):
                 if cosine > max_cos and cosine > 0.5:
                     max_cos = cosine
                     word = words
-        return {"intent": intent_key, "max_cosine_sent": cos_sent, "user_sent": word, "max_cosine_word": max_cos}
+        return {"intent": intent_key, "sent_score": cos_sent, "user_sent": word, "max_cosine_word": max_cos}
 
     def __get_sent_emb(self):
         user_sent_emb = self.emb.preprocessing(self.user_sent)

@@ -24,3 +24,5 @@ RUN ./data/swig-3.0.12/configure && make && make install
 
 RUN swig -version
 RUN python3.8 -m pip install -r requirements.txt
+
+RUN python3.8 .lib/trainer.py
