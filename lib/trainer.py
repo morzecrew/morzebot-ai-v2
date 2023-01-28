@@ -1,9 +1,12 @@
 from intent_catcher.get_intents import GetIntentsEmb
 from lib.emb.preprocessing import Preprocessing
+import numpy as np
 import sys
 
 from lib.sklearn.svm import SVM
+from torch_models.torch_fnn import NeuralNetwork
 from morph_tagging.builder import EmbedderBuilder
+
 builder = EmbedderBuilder("tiny-bert2")
 emb = builder.build()
 class Trainer:
@@ -28,11 +31,17 @@ class Trainer:
         input, label = self.__construct_training_data()
         if model_key == 'svm':
             SVM().train(input,label)
-        # if key == 'multiclass':
-        # if key == 'multiclass_dropout':
-        # if key == 'fnn':
-        #
-        # if key == 'logreg':
+        if model_key == 'multiclass':
+            MultiClassClassifier(input_size=len(input[0]),hidden_size=60,
+                                 output_size=len(list(self.user_intents.get_intent_emb().keys()))).train(np.array(input),np.array(label))
+
+        # if model_key == 'multiclass_dropout':
+        if model_key == 'fnn':
+            NeuralNetwork(input_size=len(input[0]), hidden_size=60,
+                                    output_size=len(list(self.user_intents.get_intent_emb().keys()))).train(
+                np.array(input), np.array(label))
+
+        # if model_key == 'logreg':
 
 
 
@@ -40,4 +49,4 @@ class Trainer:
 
 
 if __name__ == "__main__":
-    Trainer(emb=emb).train('svm')
+    Trainer(emb=emb).train('multiclass')
