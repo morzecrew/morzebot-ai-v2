@@ -94,7 +94,7 @@ class MultiClassClassifier:
         output = self.model(torch.from_numpy(array))
         _, predicted = torch.max(output.data, 1)
         label = predicted.item()
-        prob = output[0][predicted.item()]
+        prob = output[0][predicted.item()].item()
         return {'label': label, 'prob': prob}
 
 

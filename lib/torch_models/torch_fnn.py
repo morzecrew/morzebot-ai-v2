@@ -96,5 +96,5 @@ class NeuralNetwork:
         output = self.model(torch.from_numpy(array))
         _, predicted = torch.max(output.data, 1)
         label = predicted.item()
-        prob = torch.sigmoid(output)[0][predicted.item()]
+        prob = torch.sigmoid(output)[0][predicted.item()].item()
         return {'label': label, 'prob': prob}
