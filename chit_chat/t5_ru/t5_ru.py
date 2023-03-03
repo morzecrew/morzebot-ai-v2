@@ -12,7 +12,8 @@ device = 'cpu'
 if torch.cuda.is_available():
     device = 'cuda'
 
-model = T5ForConditionalGeneration.from_pretrained('morzecrew/rut5-small-chit-chat-guffy-morze', use_auth_token=TOKEN_HUGGINGFACE)
+model = T5ForConditionalGeneration.from_pretrained('morzecrew/rut5-small-chit-chat-guffy-morze',
+                                                   use_auth_token=TOKEN_HUGGINGFACE)
 tokenizer = T5Tokenizer.from_pretrained('morzecrew/rut5-small-chit-chat-guffy-morze', use_auth_token=TOKEN_HUGGINGFACE)
 model = model.to(device)
 
@@ -32,7 +33,7 @@ class T5Model():
 
 
 chat_model = T5Model(model=model, tokenizer=tokenizer,
-                     do_sample=True, top_p=0.95, num_return_sequences=5,
+                     do_sample=True, top_p=0.95, num_return_sequences=3,
                      repetition_penalty=3.5,
                      max_length=128)
 
@@ -54,7 +55,7 @@ class T5ChitChat(ChitChat):
                 num_return_sequences=self.chatbot.num_return_sequences,
                 # repetition_penalty=self.chatbot.repetition_penalty,
                 max_length=self.chatbot.max_length,
-            top_k = 50
+                top_k=50
             )
 
         if len(hypotheses) == 1:
@@ -65,4 +66,4 @@ class T5ChitChat(ChitChat):
             response_list.append(self.chatbot.tokenizer.decode(h, skip_special_tokens=True))
         return response_list
 
-print(T5ChitChat().response('кого ты любишь'))
+# print(T5ChitChat().response("пока"))
