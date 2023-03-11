@@ -2,32 +2,44 @@ import ruprompts
 from transformers import pipeline
 from transformers import GPT2LMHeadModel, AutoTokenizer
 
-from odqa.odqa import ODQA
+from odqa.odqa_base import ODQA
 
-model_id = "sberbank-ai/rugpt3large_based_on_gpt2"
+
 class PretrainedLLM:
-    def __init__(self, model_id):
-        self.model_name = model_id
+    def __init__(self, model_path):
+        self.model_name = model_path
 
     def tokenizer(self):
+        try:
+            tokenizer_model = AutoTokenizer.from_pretrained(self.model_name, local_files_only=True, )
+        except:
+            tokenizer_model = AutoTokenizer.from_pretrained(self.model_name)
+        return tokenizer_model
 
-
-model = GPT2LMHeadModel.from_pretrained(model_id)
-tokenizer = AutoTokenizer.from_pretrained(model_id)
-
-context = """В 1997 году Шмидхубер и Сепп Хохрайтер опубликовали работу, описывающую рекуррентную нейронную сеть, которую авторы назвали «Долгая краткосрочная память». В 2015 году эта архитектура была использована в новой реализации распознавания речи в программном обеспечении компании Google для смартфонов.
-
-Исследования Шмидхубера также включают в себя генерализации колмогоровской сложности и метрики «скорость важна» (Speed Prior), создание концепции Машины Гёделя.
-
-В 2014 году Шмидхубер основал компанию Nnaisense для работы в сфере коммерческого применения технологий искусственного интеллекта в таких областях как финансы, тяжёлая промышленность и самоуправляемый автотранспорт. Сепп Хохрайтер и Яан Таллинн занимают в компании пост советников."""
-
-ppln_qa = pipeline("text2text-generation-with-prompt", prompt="konodyuk/prompt_rugpt3large_qa_sberquad", model=model, tokenizer=tokenizer, device=0)
-ppln_qa({"context": context, "question": "С кем Шмидхубер опубликовал работу?"})
+    def model(self):
+        try:
+            model = GPT2LMHeadModel.from_pretrained(self.model_name, local_files_only=True, )
+        except:
+            model = GPT2LMHeadModel.from_pretrained(self.model_name)
+        return model
 
 
 class RuGPT3QA(ODQA):
-    def __init__(self):
+    def __init__(self, model, tokenizer):
         super().__init__()
-        pass
+        self.ppln_qa = pipeline("text2text-generation-with-prompt", prompt="konodyuk/prompt_rugpt3large_qa_sberquad", model=model, tokenizer=tokenizer, device=0)
 
-    def answer(self, context:str):
+    def answer(self, context:str, question: str):
+        return self.ppln_qa({"context": context, "question": question})
+
+
+if __name__ == "__main__":
+    text = "Трава зеленая"
+    model_id = "sberbank-ai/rugpt3large_based_on_gpt2"
+    q = "Зеленая ли трава?"
+    llm = PretrainedLLM(model_id)
+    tokenizer = llm.tokenizer()
+    model = llm.model()
+    odqa_model = RuGPT3QA(model, tokenizer)
+    answer = odqa_model.answer(text, q)
+    print(answer)
