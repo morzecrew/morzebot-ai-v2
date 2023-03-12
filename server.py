@@ -1,5 +1,8 @@
 import os
 
+from morph_tagging.builder import EmbedderBuilder
+from chit_chat.t5_ru.t5_ru import chat_model
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, APIRouter
 from endpoints.users import users_router
@@ -39,4 +42,8 @@ api_router_v1.include_router(chitchat_router)
 app.include_router(api_router_v1, prefix=API_PREFIX, tags=["api"])
 
 if __name__ == "__main__":
+    # TEMPORARY
+    # Download models from huggingface
+    EmbedderBuilder("rubert-tiny2-tuned").build()
+    chat_model.__init__()
     uvicorn.run("server:app", host='0.0.0.0', port=os.getenv("PORT", default=8000), log_level="info")

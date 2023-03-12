@@ -1,6 +1,10 @@
+from random import choice
+
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
+from chit_chat.t5_ru.t5_ru import t5_chit_chat
 from intent_catcher.intent_catcher_with_cos_sim import IntentCatcher
-from morph_tagging.builder import Builder, MorphBuilder, EmbedderBuilder
+from morph_tagging.builder import EmbedderBuilder
 from morph_tagging.tagger import Tools
 from db.repository.settings_repository import is_uuid_exists
 
@@ -17,6 +21,7 @@ async def send_intent():
 
 @intents_router.get("/")
 async def send_sentence(sentence: str, uuid: str):
+    print(sentence, uuid)
     if uuid is not None:
         if not is_uuid_exists(uuid):
             return {'code': 404, 'status': 'uuid not found', 'error': f'settings not found by this uuid: {uuid}'}
@@ -35,6 +40,8 @@ async def send_sentence(sentence: str, uuid: str):
     emb = builder.build()
     catcher = IntentCatcher(sentence, emb)
     result = catcher.get_intent()
-    # TODO add chit chat
-    return result
 
+    # need fixes to make normal dialogs with user
+    if result["max_cosine_sent"] > 0.85:
+        return str(result)
+    return choice(t5_chit_chat.response(sentence))
