@@ -9,8 +9,8 @@ from endpoints.users import users_router
 from endpoints.intents import intents_router
 from endpoints.settings import settings_router
 from endpoints.faq import faq_router
+from endpoints.chitchat import chitchat_router
 import uvicorn
-
 
 app = FastAPI()
 
@@ -37,6 +37,8 @@ api_router_v1.include_router(users_router)
 api_router_v1.include_router(intents_router)
 api_router_v1.include_router(settings_router)
 api_router_v1.include_router(faq_router)
+api_router_v1.include_router(chitchat_router)
+
 app.include_router(api_router_v1, prefix=API_PREFIX, tags=["api"])
 
 if __name__ == "__main__":
